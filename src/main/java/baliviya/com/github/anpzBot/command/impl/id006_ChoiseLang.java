@@ -15,6 +15,7 @@ public class id006_ChoiseLang extends Command {
         sendMessage(2);
         return EXIT;
     }
+
     private void choiseLang() throws SQLException {
         if (isButton(7)) {
             LangService.setLang(chatId, Lang.ru);

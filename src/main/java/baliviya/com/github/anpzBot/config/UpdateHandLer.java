@@ -29,6 +29,7 @@ public class UpdateHandLer {
             logger.error("Exception: ", e);
         }
     }
+
     private Conversation getConversation(Update update) throws TelegramApiException {
         Long chatId = UpdateUtil.getChatId(update);
         Conversation conversation = conversations.get(chatId);

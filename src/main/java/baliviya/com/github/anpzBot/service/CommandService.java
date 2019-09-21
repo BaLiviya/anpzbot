@@ -31,7 +31,8 @@ public class CommandService {
                         inputtedText = updateMessage.getText();
                     }
                 }
-            } catch (Exception e) { }
+            } catch (Exception e) {
+            }
         } else {
             try {
                 inputtedText = updateMessage.getText();
@@ -42,6 +43,7 @@ public class CommandService {
         Button button = buttonDao.getButton(inputtedText);
         return getCommand(button);
     }
+
     private Command getCommand(Button button) throws CommandNotFoundException {
         if (button.getCommandId() == 0) throw new CommandNotFoundException(new Exception("No data is available"));
         Command command = CommandFactory.getCommand(button.getCommandId());
@@ -49,7 +51,8 @@ public class CommandService {
         command.setMessageId(button.getMessageId());
         return command;
     }
-    private Command getCommandById(int id)  {
+
+    private Command getCommandById(int id) {
         return CommandFactory.getCommand(id);
     }
 }

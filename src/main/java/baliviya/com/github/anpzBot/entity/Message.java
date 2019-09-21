@@ -21,4 +21,8 @@ public class Message {
     private FileType typeFile;
     private Lang lang;
 
+    public void setFile(String file, FileType typeFile) {
+        this.file = file;
+        this.typeFile = typeFile;
+    }
 }

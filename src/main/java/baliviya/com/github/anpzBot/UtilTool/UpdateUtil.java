@@ -34,9 +34,11 @@ public class UpdateUtil {
         }
         return update.getMessage().getChatId();
     }
+
     public static String toString(Update update) {
         return convertString(update, true);
     }
+
     private static String convertString(Update update, boolean isShort) {
         String text = update.toString();
         int countTab = 0;

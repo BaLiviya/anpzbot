@@ -22,6 +22,7 @@ public class DaoFactory {
         }
         return source;
     }
+
     private static DriverManagerDataSource getDriverManagerDataSource() {
         DriverManagerDataSource driver = new DriverManagerDataSource();
         String driverName = PropertiesUtil.getProperty("jdbc.driverClassName");
@@ -34,79 +35,44 @@ public class DaoFactory {
         logger.info("Database - {}, url - {}", driverName, urlName);
         return driver;
     }
+
     public UsersDao getUserDao() {
         return new UsersDao();
     }
+
     public AdminDao getAdminDao() {
         return new AdminDao();
     }
+
     public ButtonDao getButtonDao() {
         return new ButtonDao();
     }
+
     public static DaoFactory getFactory() {
         return daoFactory;
     }
+
     public LangUsersDao getLangUsersDao() {
         return new LangUsersDao();
     }
+
     public MessageDao getMessageDao() {
         return new MessageDao();
     }
+
     public KeyboardMarkUpDao getKeyboardMarkUpDao() {
         return new KeyboardMarkUpDao();
     }
 
-//    public PropertiesDao getPropertiesDao() {
-//        return new PropertiesDao();
-//    }
-//
-//    public SecretDao getSecretDao() {
-//        return new SecretDao();
-//    }
-//
-//    public ApplicationDao getApplicationDao() {
-//        return new ApplicationDao();
-//    }
-//
-//    public CategoriesDao getCategoriesDao() {
-//        return new CategoriesDao();
-//    }
-//
-//
-//    public ReportDao getReportDao() {
-//        return new ReportDao();
-//    }
-//
-//    public TypeCategoryDao getTypeCategoryDao() {
-//        return new TypeCategoryDao();
-//    }
-//
-//    public SurveyAnswerDao getSurveyAnswerDao() {
-//        return new SurveyAnswerDao();
-//    }
-//
-//    public UsersCRMDao getUsersCRMDao() {
-//        return new UsersCRMDao();
-//    }
-//
-//    public QuestionDao getQuestionDao() {
-//        return new QuestionDao();
-//    }
-//    public DepartmentDao getDepartmentDao() {
-//        return new DepartmentDao();
-//    }
-//
-//    public QuestionMessageDao getQuestMessageDao() {
-//        return new QuestionMessageDao();
-//    }
-//
-//    public AppTelegramDao getApplicationTelegramDao() {
-//        return new AppTelegramDao();
-//    }
-//    public AppTelHistoryDao getAppTelHistoryDao(){
-//        return new AppTelHistoryDao();
-//    }
-//    public FilesDao getFilesDao(){
-//        return new FilesDao();
-//    }
+    public SuggestionDao getSuggestionDao() {
+        return new SuggestionDao();
+    }
+
+    public AdsDao getAdsDao() {
+        return new AdsDao();
+    }
+
+    public SaleDao getSaleDao() {
+        return new SaleDao();
+    }
 }

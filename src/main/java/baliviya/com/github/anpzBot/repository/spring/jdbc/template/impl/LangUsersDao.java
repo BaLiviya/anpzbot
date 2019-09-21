@@ -6,7 +6,6 @@ import baliviya.com.github.anpzBot.repository.enums.Lang;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
 
 public class LangUsersDao extends AbstractDao<LangUser> {
 
@@ -17,18 +16,17 @@ public class LangUsersDao extends AbstractDao<LangUser> {
             insert(e);
         }
     }
+
     private void insert(LangUser e) {
         sql = "INSERT INTO standard.lang_user (chat_id, lang_id) VALUES (?, ?)";
         getJdbcTemplate().update(sql, e.getChatId(), e.getLang().getId());
     }
+
     private void update(LangUser e) {
         sql = "UPDATE standard.lang_user SET lang_id=? WHERE chat_id = ?";
         getJdbcTemplate().update(sql, e.getLang().getId(), e.getChatId());
     }
-    public List<LangUser> getAll() {
-        sql = "SELECT * FROM standard.lang_user";
-        return getJdbcTemplate().query(sql, this::mapper);
-    }
+
     public LangUser getByChatId(long chatId) {
         sql = "SELECT * FROM standard.lang_user WHERE chat_id = ?";
         LangUser langUser = null;
@@ -38,6 +36,7 @@ public class LangUsersDao extends AbstractDao<LangUser> {
         }
         return langUser;
     }
+
     public boolean isRegistered(long chatId) {
         sql = "SELECT COUNT(*) FROM standard.lang_user WHERE chat_id = ?";
         if (getJdbcTemplate().queryForObject(sql, setParam(chatId), Integer.class) != 0) {
@@ -46,6 +45,7 @@ public class LangUsersDao extends AbstractDao<LangUser> {
         return false;
 
     }
+
     @Override
     protected LangUser mapper(ResultSet rs, int i) throws SQLException {
         LangUser entity = new LangUser();

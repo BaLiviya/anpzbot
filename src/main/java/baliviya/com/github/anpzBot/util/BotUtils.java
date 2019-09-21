@@ -35,9 +35,11 @@ public class BotUtils {
             } else throw e;
         }
     }
+
     public int sendMessage(String text, long chatId) throws TelegramApiException {
         return sendMessage(text, chatId, ParseMode.html);
     }
+
     public int sendMessage(String text, long chatId, ParseMode parseMode) throws TelegramApiException {
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(chatId);
@@ -49,6 +51,7 @@ public class BotUtils {
         }
         return sendMessage(sendMessage);
     }
+
     public void sendMessage(String text, long chatId, Contact contact) throws TelegramApiException {
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(chatId);
@@ -59,9 +62,11 @@ public class BotUtils {
             sendContact(chatId, contact);
         }
     }
+
     public int sendMessage(long messageId, long chatId) throws TelegramApiException {
         return sendMessage(messageId, chatId, null, null);
     }
+
     public int sendMessage(long messageId, long chatId, Contact contact, String photo) throws TelegramApiException {
         int result = 0;
         Message message = daoFactory.getMessageDao().getMessage(messageId);
@@ -109,6 +114,7 @@ public class BotUtils {
         }
         return sendMessage(sendMessage);
     }
+
     public int sendMessageWithKeyboard(String text, ReplyKeyboard keyboard, long chatID) throws TelegramApiException {
         return sendMessageWithKeyboard(text, keyboard, chatID, 0);
     }
@@ -121,137 +127,11 @@ public class BotUtils {
                 .setPhoneNumber(contact.getPhoneNumber())
         ).getMessageId();
     }
+
     public void deleteMessage(long chatId, int messageId) {
         try {
             bot.execute(new DeleteMessage(chatId, messageId));
         } catch (TelegramApiException e) {
         }
     }
-
-//    public void editMessage(String text, InlineKeyboardMarkup keyboardMarkup, long chatId, int messageId) throws TelegramApiException {
-//        if (keyboardMarkup == null) {
-//            bot.execute(new EditMessageText()
-//                    .setText(text)
-//                    .setMessageId(messageId)
-//                    .setChatId(chatId));
-//            return;
-//        }
-//        bot.execute(new EditMessageText()
-//                .setText(text)
-//                .setMessageId(messageId)
-//                .setChatId(chatId)
-//                .setReplyMarkup(keyboardMarkup));
-//    }
-//    public ReplyKeyboard addButton(ReplyKeyboard replyKeyboard, Button buttonFromDb) {
-//        try {
-//            InlineKeyboardMarkup keyboard = (InlineKeyboardMarkup) replyKeyboard;
-//            List<InlineKeyboardButton> rowButton = new ArrayList<>();
-//            InlineKeyboardButton button = new InlineKeyboardButton();
-//            String buttonText = buttonFromDb.getName();
-//            button.setText(buttonText);
-//            if (buttonFromDb.getUrl() != null) {
-//                button.setUrl(buttonFromDb.getUrl());
-//            } else {
-//                buttonText = buttonText.length() < 64 ? buttonText : buttonText.substring(0, 64);
-//                button.setCallbackData(buttonText);
-//            }
-//            button.setCallbackData(buttonFromDb.getName());
-//            rowButton.add(button);
-//            keyboard.getKeyboard().add(rowButton);
-//            return keyboard;
-//        } catch (Exception e) {
-//            ReplyKeyboardMarkup keyboard = (ReplyKeyboardMarkup) replyKeyboard;
-//            KeyboardRow keyboardRow = new KeyboardRow();
-//            KeyboardButton keyboardButton = new KeyboardButton();
-//            keyboardButton.setText(buttonFromDb.getName());
-//            keyboardButton.setRequestContact(buttonFromDb.isRequestContact());
-//            keyboardRow.add(keyboardButton);
-//            keyboard.getKeyboard().add(keyboardRow);
-//            return keyboard;
-//        }
-//    }
-//    public InlineKeyboardMarkup getInlineKeyboard(String[] namesButton, String[] callbackMessage) {
-//        InlineKeyboardMarkup keyboard = new InlineKeyboardMarkup();
-//        List<List<InlineKeyboardButton>> rowsKeyboard = new ArrayList<>();
-//        String buttonIdsString;
-//        int callbackIndex = 0;
-//        for (int i = 0; i < namesButton.length; i++) {
-//            buttonIdsString = namesButton[i];
-//            List<InlineKeyboardButton> rowButton = new ArrayList<>();
-//            String[] buttonIds = buttonIdsString.split(",");
-//            for (String buttonId : buttonIds) {
-//                InlineKeyboardButton button = new InlineKeyboardButton();
-//                button.setText(buttonId);
-//                if (callbackMessage == null) {
-//                    button.setCallbackData(buttonId);
-//                } else {
-//                    button.setCallbackData(callbackMessage[callbackIndex++]);
-//                }
-//                rowButton.add(button);
-//            }
-//            rowsKeyboard.add(rowButton);
-//        }
-//        keyboard.setKeyboard(rowsKeyboard);
-//        return keyboard;
-//    }
-//    public void sendPhoto(String photo, long chatId) throws TelegramApiException {
-//        try {
-//            bot.execute(new SendPhoto().setChatId(chatId).setPhoto(photo));
-//        } catch (TelegramApiException e) {
-//            sendMessage("Can't send photo", chatId, ParseMode.html);
-//        }
-//    }
-//    public void deleteInlineKeyboard(long chatId, int messId) {
-//        try {
-//            bot.execute(new EditMessageReplyMarkup()
-//                    .setChatId(chatId)
-//                    .setMessageId(messId)
-//                    .setReplyMarkup(null)
-//            );
-//        } catch (TelegramApiException ignored) {
-//        }
-//    }
-//    public int sendAnswer(String text, long chatId, int messId) throws TelegramApiException {
-//        return bot.execute(new SendMessage(chatId, text)
-//                .setReplyToMessageId(messId)
-//        ).getMessageId();
-//    }
-//    public boolean hasContactOwner(Update update) {
-//        return (update.hasMessage() && update.getMessage().hasContact()) && Objects.equals(update.getMessage().getFrom().getId(), update.getMessage().getContact().getUserID());
-//    }
-//    public int sendFile(TFile file, long chatId) {
-//        try {
-//            switch (file.getType()) {
-//                case audio:
-//                    return bot.execute(new SendAudio()
-//                            .setChatId(chatId)
-//                            .setAudio(file.getLink())
-//                    ).getMessageId();
-//                case photo:
-//                    return bot.execute(new SendPhoto()
-//                            .setChatId(chatId)
-//                            .setPhoto(file.getLink())
-//                    ).getMessageId();
-//                case voice:
-//                    return bot.execute(new SendVoice()
-//                            .setChatId(chatId)
-//                            .setVoice(file.getLink())
-//                    ).getMessageId();
-//                case video:
-//                    return bot.execute(new SendVideo()
-//                            .setChatId(chatId)
-//                            .setVideo(file.getLink())
-//                    ).getMessageId();
-//                default:
-//                    return bot.execute(new SendDocument()
-//                            .setChatId(chatId)
-//                            .setDocument(file.getLink())
-//                    ).getMessageId();
-//            }
-//        } catch (TelegramApiException e) {
-//            logger.error("Can't send by chatId: {} - file:{}", chatId, file.toString());
-//            logger.error("Reason: ", e);
-//            return -1;
-//        }
-//    }
 }

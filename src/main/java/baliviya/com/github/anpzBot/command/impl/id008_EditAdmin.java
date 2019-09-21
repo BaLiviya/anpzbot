@@ -29,7 +29,9 @@ public class id008_EditAdmin extends Command {
             showIcon = getText(82);
             delete = getText(83);
         }
-        if (mess != 0) { deleteMessage(mess); }
+        if (mess != 0) {
+            deleteMessage(mess);
+        }
         if (hasContact()) {
             registerNewAdmin();
             return COMEBACK;
@@ -40,11 +42,14 @@ public class id008_EditAdmin extends Command {
                     int numberAdminList = Integer.parseInt(updateMessageText.replaceAll("[^0-9]", ""));
                     adminDao.delete(allAdmins.get(numberAdminList));
                 }
-            } catch (NumberFormatException e) { e.printStackTrace(); }
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+            }
         }
         sendEditorAdmin();
         return COMEBACK;
     }
+
     private boolean registerNewAdmin() throws SQLException, TelegramApiException {
         long newAdminChatId = update.getMessage().getContact().getUserID();
         if (!usersDao.isRegistered(newAdminChatId)) {
@@ -64,9 +69,11 @@ public class id008_EditAdmin extends Command {
         }
         return false;
     }
+
     private String getInfoByUser(User user) {
         return String.format("%s %s %s", user.getFullName(), user.getPhone(), user.getChatId());
     }
+
     private void sendEditorAdmin() throws SQLException, TelegramApiException {
         deleteMessage();
         try {
@@ -78,6 +85,7 @@ public class id008_EditAdmin extends Command {
         }
         toDeleteMessage(mess);
     }
+
     private void getText(boolean withLink) throws SQLException {
         text = new StringBuilder("");
         allAdmins = adminDao.getAll();

@@ -22,16 +22,20 @@ public class KeyboardMarkUpDao extends AbstractDao {
 
     private ButtonDao buttonDao;
 
-    public KeyboardMarkUpDao() { buttonDao = factory.getButtonDao(); }
+    public KeyboardMarkUpDao() {
+        buttonDao = factory.getButtonDao();
+    }
 
     public String getButtonsString(int id) {
         sql = "SELECT button_ids FROM STANDARD.KEYBOARD WHERE ID=?";
         return getJdbcTemplate().queryForObject(sql, new Object[]{id}, String.class);
     }
+
     public boolean isInline(long keyboardMarkUpId) {
         sql = "SELECT inline FROM STANDARD.KEYBOARD WHERE ID=?";
         return getJdbcTemplate().queryForObject(sql, new Object[]{keyboardMarkUpId}, Boolean.class);
     }
+
     public ReplyKeyboard select(long keyboardMarkUpId) {
         if (keyboardMarkUpId < 0) {
             ReplyKeyboardRemove keyboard = new ReplyKeyboardRemove();
@@ -43,27 +47,36 @@ public class KeyboardMarkUpDao extends AbstractDao {
         sql = "SELECT * FROM STANDARD.KEYBOARD WHERE ID=?";
         return getKeyboard(getJdbcTemplate().queryForObject(sql, new Object[]{keyboardMarkUpId}, this::mapper));
     }
+
     public ReplyKeyboard selectForEdition(long keyboardMarkUpId, Lang lang) {
         if (keyboardMarkUpId < 0) {
             ReplyKeyboardRemove keyboard = new ReplyKeyboardRemove();
             return keyboard;
         }
-        if (keyboardMarkUpId == 0) { return null; }
+        if (keyboardMarkUpId == 0) {
+            return null;
+        }
         sql = "SELECT * FROM STANDARD.KEYBOARD WHERE ID=?";
         return getKeyboardForEdition(getJdbcTemplate().queryForObject(sql, new Object[]{keyboardMarkUpId}, this::mapper), lang);
     }
+
     public ReplyKeyboard select(long keyboardMarkUpId, Lang lang) {
         if (keyboardMarkUpId < 0) {
             ReplyKeyboardRemove keyboard = new ReplyKeyboardRemove();
             return keyboard;
         }
-        if (keyboardMarkUpId == 0) { return null; }
+        if (keyboardMarkUpId == 0) {
+            return null;
+        }
         sql = "SELECT * FROM STANDARD.KEYBOARD WHERE ID=?";
         return getKeyboard(getJdbcTemplate().queryForObject(sql, new Object[]{keyboardMarkUpId}, this::mapper), lang);
     }
+
     private ReplyKeyboard getKeyboard(Keyboard keyboard) {
         String buttonIds = keyboard.getButton_ids();
-        if (buttonIds == null) { return null; }
+        if (buttonIds == null) {
+            return null;
+        }
         String[] rows = buttonIds.split(";");
         if (keyboard.isInline()) {
             return getInlineKeyboard(rows);
@@ -71,6 +84,7 @@ public class KeyboardMarkUpDao extends AbstractDao {
             return getReplyKeyboard(rows);
         }
     }
+
     private ReplyKeyboard getKeyboard(Keyboard keyboard, Lang lang) {
         String buttonIds = keyboard.getButton_ids();
         if (buttonIds == null) {
@@ -83,12 +97,16 @@ public class KeyboardMarkUpDao extends AbstractDao {
             return getReplyKeyboard(rows, lang);
         }
     }
+
     private ReplyKeyboard getKeyboardForEdition(Keyboard keyboard, Lang lang) {
         String buttonIds = keyboard.getButton_ids();
-        if (buttonIds == null) { return null; }
+        if (buttonIds == null) {
+            return null;
+        }
         String[] rows = buttonIds.split(";");
         return getInlineKeyboardForEdition(rows, lang);
     }
+
     private ReplyKeyboard getReplyKeyboard(String[] rows) {
         ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
         replyKeyboardMarkup.setResizeKeyboard(true);
@@ -114,6 +132,7 @@ public class KeyboardMarkUpDao extends AbstractDao {
         replyKeyboardMarkup.setOneTimeKeyboard(isRequestContact);
         return replyKeyboardMarkup;
     }
+
     private ReplyKeyboard getReplyKeyboard(String[] rows, Lang lang) {
         ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
         replyKeyboardMarkup.setResizeKeyboard(true);
@@ -139,6 +158,7 @@ public class KeyboardMarkUpDao extends AbstractDao {
         replyKeyboardMarkup.setOneTimeKeyboard(isRequestContact);
         return replyKeyboardMarkup;
     }
+
     private InlineKeyboardMarkup getInlineKeyboard(String[] rowIds) {
         InlineKeyboardMarkup keyboard = new InlineKeyboardMarkup();
         List<List<InlineKeyboardButton>> rows = new ArrayList<>();
@@ -164,6 +184,7 @@ public class KeyboardMarkUpDao extends AbstractDao {
         keyboard.setKeyboard(rows);
         return keyboard;
     }
+
     private InlineKeyboardMarkup getInlineKeyboard(String[] rowIds, Lang lang) {
         InlineKeyboardMarkup keyboard = new InlineKeyboardMarkup();
         List<List<InlineKeyboardButton>> rows = new ArrayList<>();
@@ -189,6 +210,7 @@ public class KeyboardMarkUpDao extends AbstractDao {
         keyboard.setKeyboard(rows);
         return keyboard;
     }
+
     private InlineKeyboardMarkup getInlineKeyboardForEdition(String[] rowIds, Lang lang) {
         InlineKeyboardMarkup keyboard = new InlineKeyboardMarkup();
         List<List<InlineKeyboardButton>> rows = new ArrayList<>();
@@ -213,6 +235,7 @@ public class KeyboardMarkUpDao extends AbstractDao {
         keyboard.setKeyboard(rows);
         return keyboard;
     }
+
     public List<Button> getList(int keyId) {
         List<Button> list = new ArrayList<>();
         for (String x : Arrays.asList(getButtonsString(keyId).split(";,"))) {
@@ -220,6 +243,7 @@ public class KeyboardMarkUpDao extends AbstractDao {
         }
         return list;
     }
+
     @Override
     protected Keyboard mapper(ResultSet resultSet, int index) throws SQLException {
         Keyboard keyboard = new Keyboard();

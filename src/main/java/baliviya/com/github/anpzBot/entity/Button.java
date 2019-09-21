@@ -18,4 +18,13 @@ public class Button {
     private boolean requestContact;
     private int messageId;
 
+    public Button setName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    public Button setUrl(String url) {
+        this.url = url;
+        return this;
+    }
 }

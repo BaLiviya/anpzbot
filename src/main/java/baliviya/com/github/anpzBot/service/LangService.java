@@ -22,6 +22,7 @@ public class LangService {
         }
         return lang;
     }
+
     public static void setLang(long chatId, Lang lang) {
         langMap.put(chatId, lang);
         DaoFactory.getFactory().getLangUsersDao().insertOrUpdate(new LangUser(chatId, lang));

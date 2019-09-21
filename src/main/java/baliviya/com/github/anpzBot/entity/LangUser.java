@@ -12,5 +12,4 @@ public class LangUser {
 
     private long chatId;
     private Lang lang;
-
 }

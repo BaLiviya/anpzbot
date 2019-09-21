@@ -35,6 +35,7 @@ public class Conversation {
     public static long getCurrentChatId() {
         return currentChatId;
     }
+
     public void handleUpdate(Update update, DefaultAbsSender bot) throws SQLException, TelegramApiException {
         printUpdate(update);
         chatId = UpdateUtil.getChatId(update);
@@ -70,11 +71,13 @@ public class Conversation {
             }
         }
     }
+
     private void checkLang(long chatId) {
         if (LangService.getLang(chatId) == null) {  // назначаем язык для нового пользователя
             LangService.setLang(chatId, Lang.ru);
         }
     }
+
     private void printUpdate(Update update) {
         String dateMessage = "";
         if (update.hasMessage()) {
@@ -84,9 +87,11 @@ public class Conversation {
 //        отключаем
         logger.debug(UpdateUtil.toString(update));
     }
+
     public static DefaultAbsSender getBot() {
         return Main.getBot();
     }
+
     void clear() {
         command.clear();
         command = null;

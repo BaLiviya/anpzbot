@@ -8,7 +8,6 @@ import lombok.ToString;
 @Getter
 @ToString
 public enum Lang {
-
     ru(1),
     kz(2);
 

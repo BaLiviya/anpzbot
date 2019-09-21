@@ -11,5 +11,4 @@ public class Keyboard {
     private String button_ids;
     private boolean inline;
     private String comment;
-
 }

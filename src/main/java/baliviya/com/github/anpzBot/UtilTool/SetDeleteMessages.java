@@ -24,9 +24,11 @@ public class SetDeleteMessages {
             map.get(chatId).add(messageId);
         }
     }
+
     public static void addMessage(long chatId, int messageId) {
         add(messagesIds, chatId, messageId);
     }
+
     public static void deleteMessage(long chatId, DefaultAbsSender bot) {
         try {
             if (messagesIds.get(chatId) != null) {
@@ -35,7 +37,6 @@ public class SetDeleteMessages {
                         bot.execute(new DeleteMessage(chatId, integer)
                         );
                     } catch (TelegramApiException e) {
-                        //e.printStackTrace();
                     }
                 }
             }
@@ -43,9 +44,11 @@ public class SetDeleteMessages {
         }
         messagesWithKeyboardIds.put(chatId, new HashSet<>());
     }
+
     public static void addKeyboard(long chatId, int messageId) {
         add(messagesWithKeyboardIds, chatId, messageId);
     }
+
     public static void deleteKeyboard(long chatId, DefaultAbsSender bot) {
         try {
             if (messagesWithKeyboardIds.get(chatId) != null) {
