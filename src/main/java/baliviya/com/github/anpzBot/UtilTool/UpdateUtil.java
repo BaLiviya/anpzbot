@@ -1,6 +1,7 @@
 package baliviya.com.github.anpzBot.UtilTool;
 
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.User;
 
 public class UpdateUtil {
 
@@ -33,6 +34,46 @@ public class UpdateUtil {
             return update.getShippingQuery().getFrom().getId();
         }
         return update.getMessage().getChatId();
+    }
+
+    public static String getFrom(Update update) {
+        String userName = null;
+        User user = getUser(update);
+        if (user != null) {
+            userName = user.getUserName();
+        }
+        return userName;
+    }
+
+    public static User getUser(Update update) {
+        if (update.hasMessage()) {
+            return update.getMessage().getFrom();
+        }
+        if (update.hasEditedMessage()) {
+            return update.getEditedMessage().getFrom();
+        }
+        if (update.hasCallbackQuery()) {
+            return update.getCallbackQuery().getFrom();
+        }
+        if (update.hasInlineQuery()) {
+            return update.getInlineQuery().getFrom();
+        }
+        if (update.hasShippingQuery()) {
+            return update.getShippingQuery().getFrom();
+        }
+        if (update.hasPreCheckoutQuery()) {
+            return update.getPreCheckoutQuery().getFrom();
+        }
+        if (update.hasChannelPost()) {
+            return update.getChannelPost().getFrom();
+        }
+        if (update.hasEditedChannelPost()) {
+            return update.getEditedChannelPost().getFrom();
+        }
+        if (update.hasChosenInlineQuery()) {
+            return update.getChosenInlineQuery().getFrom();
+        }
+        return null;
     }
 
     public static String toString(Update update) {

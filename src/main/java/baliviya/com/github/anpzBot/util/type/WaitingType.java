@@ -13,4 +13,5 @@ public enum WaitingType {
     SET_SUGGESTION,
     START_DATE, END_DATE,
     ADD_AD_AUTO,
+    ADD_CONTACT,
 }

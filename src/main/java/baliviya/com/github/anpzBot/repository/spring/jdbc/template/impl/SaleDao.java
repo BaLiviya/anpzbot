@@ -1,5 +1,6 @@
 package baliviya.com.github.anpzBot.repository.spring.jdbc.template.impl;
 
+import baliviya.com.github.anpzBot.entity.custom.Ads;
 import baliviya.com.github.anpzBot.entity.custom.Sale;
 import baliviya.com.github.anpzBot.repository.AbstractDao;
 import baliviya.com.github.anpzBot.repository.enums.FileType;
@@ -11,14 +12,19 @@ import java.util.List;
 public class SaleDao extends AbstractDao {
 
     public void insert(Sale sale) {
-        sql = "INSERT INTO public.sale (chat_id, text, photo, file, type_file, lang_id, category, post_date) VALUES (?,?,?,?,?,?,?,?)";
+        sql = "INSERT INTO public.sale (chat_id, text, photo, file, type_file, lang_id, category, post_date, button_id) VALUES (?,?,?,?,?,?,?,?,?)";
         getJdbcTemplate().update(sql, setParam(sale.getChatId(), sale.getText(), sale.getPhoto(), sale.getFile(),
-                sale.getFile() == null ? null : sale.getTypeFile().name(), sale.getLangId(), sale.getCategory(), sale.getPostDate()));
+                sale.getFile() == null ? null : sale.getTypeFile().name(), sale.getLangId(), sale.getCategory(), sale.getPostDate(), sale.getButton_id()));
     }
 
     public List<Sale> getForCategory(String catName) {
         sql = "SELECT * FROM public.sale WHERE CATEGORY = ? ORDER BY ID";
         return getJdbcTemplate().query(sql, setParam(catName), this::mapper);
+    }
+
+    public List<Sale> getCategory(int buttonId) {
+        sql = "SELECT * FROM public.sale WHERE button_id = ? ORDER BY ID";
+        return getJdbcTemplate().query(sql, setParam(buttonId), this::mapper);
     }
 
     @Override
@@ -30,7 +36,8 @@ public class SaleDao extends AbstractDao {
                 rs.getString(5),
                 rs.getString(6) != null ? FileType.valueOf(rs.getString(6)) : null,
                 rs.getInt(7),
-                rs.getString(8),
-                rs.getDate(9));
+                rs.getInt(8),
+                rs.getDate(9),
+                rs.getInt(10));
     }
 }

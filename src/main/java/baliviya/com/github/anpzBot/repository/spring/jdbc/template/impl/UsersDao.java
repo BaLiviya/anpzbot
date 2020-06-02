@@ -14,6 +14,11 @@ public class UsersDao extends AbstractDao {
         getJdbcTemplate().update(sql, user.getChatId(), user.getUserName(), user.getPhone(), user.getFullName(), user.getEmail());
     }
 
+    public  void insert(Long chatId) {
+        if (chatId == 0) return;
+        sql = "INSERT INTO standard.users(chat_id) VALUES (?)";
+        getJdbcTemplate().update(sql, setParam(chatId));
+    }
     public void update(User user) {
         sql = "UPDATE standard.users SET phone = ?, full_name = ?, email = ?, user_name=? WHERE chat_id = ?";
         getJdbcTemplate().update(sql, user.getPhone(), user.getFullName(), user.getEmail(), user.getUserName(), user.getChatId());

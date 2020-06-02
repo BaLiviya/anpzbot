@@ -1,17 +1,16 @@
 package baliviya.com.github.anpzBot.entity.custom;
 
-import baliviya.com.github.anpzBot.repository.enums.Lang;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Category {
-
     private int id;
-    private String name;
-    private String crmName;
-    private String message;
-    private Lang lang;
-    private int typeId;
+    private int button_id;
+
 }

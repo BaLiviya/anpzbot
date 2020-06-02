@@ -2,6 +2,8 @@ package baliviya.com.github.anpzBot.command;
 
 import baliviya.com.github.anpzBot.UtilTool.SetDeleteMessages;
 import baliviya.com.github.anpzBot.UtilTool.UpdateUtil;
+import baliviya.com.github.anpzBot.entity.Message;
+import baliviya.com.github.anpzBot.entity.custom.TempUser;
 import baliviya.com.github.anpzBot.repository.DaoFactory;
 import baliviya.com.github.anpzBot.repository.enums.Lang;
 import baliviya.com.github.anpzBot.repository.spring.jdbc.template.impl.*;
@@ -13,13 +15,20 @@ import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.bots.DefaultAbsSender;
+import org.telegram.telegrambots.meta.api.methods.send.SendAudio;
+import org.telegram.telegrambots.meta.api.methods.send.SendDocument;
+import org.telegram.telegrambots.meta.api.methods.send.SendVideo;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Contact;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 @NoArgsConstructor
 public abstract class Command {
@@ -56,6 +65,8 @@ public abstract class Command {
     protected static KeyboardMarkUpDao keyboardMarkUpDao = factory.getKeyboardMarkUpDao();
     protected static AdsDao adsDao = factory.getAdsDao();
     protected static SaleDao saleDao = factory.getSaleDao();
+    protected static CategoryDao categoryDao = factory.getCategoryDao();
+    protected static TempUserDao tempUserDao = factory.getTempUserDao();
 
     public abstract boolean execute() throws SQLException, TelegramApiException;
 
@@ -223,4 +234,44 @@ public abstract class Command {
         return update.hasMessage() && update.getMessage().getAudio() != null;
     }
 
+    protected void sendMessageWithAddition() throws TelegramApiException {
+        deleteMessage(updateMessageId);
+        Message message = messageDao.getMessage(messageId);
+        sendMessage(messageId, chatId, null, message.getPhoto());
+        if (message.getFile() != null) {
+            try {
+                switch (message.getTypeFile()) {
+                    case audio:
+                        bot.execute(new SendAudio()
+                                .setAudio(message.getFile())
+                                .setChatId(chatId));
+                    case video:
+                        bot.execute(new SendVideo()
+                                .setVideo(message.getFile())
+                                .setChatId(chatId));
+                    case document:
+                        bot.execute(new SendDocument()
+                                .setChatId(chatId)
+                                .setDocument(message.getFile()));
+                }
+            } catch (TelegramApiException e) {
+                getLogger().error("Exception by send file for message " + messageId, e);
+            }
+        }
+    }
+
+    public ReplyKeyboard getInlineKeyboardUsers(List<TempUser> tempUsers) {
+        InlineKeyboardMarkup keyboard = new InlineKeyboardMarkup();
+        List<List<InlineKeyboardButton>> rows = new ArrayList<>();
+        for (TempUser tempUser : tempUsers) {
+            List<InlineKeyboardButton> row = new ArrayList<>();
+            InlineKeyboardButton button = new InlineKeyboardButton();
+            button.setText(tempUser.getFullName());
+            button.setCallbackData("/id" + tempUser.getId());
+            row.add(button);
+            rows.add(row);
+        }
+        keyboard.setKeyboard(rows);
+        return keyboard;
+    }
 }

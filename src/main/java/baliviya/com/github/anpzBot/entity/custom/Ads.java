@@ -19,8 +19,9 @@ public class Ads {
     private String file;
     private FileType typeFile;
     private int langId;
-    private String category;
+    private int category;
     private Date postDate;
+    private int button_id;
 
     public void setFile(String file, FileType typeFile) {
         this.file = file;

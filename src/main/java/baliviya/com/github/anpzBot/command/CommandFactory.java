@@ -16,9 +16,9 @@ public class CommandFactory {
             case 1:
                 return new id001_ShowInfo();
             case 2:
-                return new id002_BuyAutoAdShowMenu();
+                return new id002_AddNewUser();
             case 3:
-                return new id003_BuyLandAdShowMenu();
+//                return new id003_BuyLandAdShowMenu();
             case 4:
                 return new id004_ShowAdminInfo();
             case 5:
@@ -30,13 +30,17 @@ public class CommandFactory {
             case 8:
                 return new id008_EditAdmin();
             case 9:
-                return new id009_BuyOtherAdShowMenu();
+//                return new id009_BuyOtherAdShowMenu();
             case 10:
-                return new id010_SaleAutoAdShowMenu();
+//                return new id010_SaleAutoAdShowMenu();
             case 11:
-                return new id011_SaleLandAdShowMenu();
+//                return new id011_SaleLandAdShowMenu();
             case 12:
-                return new id012_SaleOtherAdShowMenu();
+//                return new id012_SaleOtherAdShowMenu();
+            case 13:
+                return new id013_ShowAds();
+            case 14:
+                return new id014_ShowSale();
             case 19:
                 return new id019_EditMenu();
         }

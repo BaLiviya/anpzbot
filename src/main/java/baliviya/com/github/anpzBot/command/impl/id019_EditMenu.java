@@ -4,6 +4,7 @@ import baliviya.com.github.anpzBot.UtilTool.ButtonUtil;
 import baliviya.com.github.anpzBot.command.Command;
 import baliviya.com.github.anpzBot.entity.Button;
 import baliviya.com.github.anpzBot.entity.Message;
+import baliviya.com.github.anpzBot.entity.custom.Category;
 import baliviya.com.github.anpzBot.repository.enums.FileType;
 import baliviya.com.github.anpzBot.repository.enums.Lang;
 import baliviya.com.github.anpzBot.service.LangService;
@@ -11,6 +12,8 @@ import baliviya.com.github.anpzBot.service.ParserMessageEntity;
 import baliviya.com.github.anpzBot.util.type.WaitingType;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+
+import java.util.Optional;
 
 public class id019_EditMenu extends Command {
 
@@ -116,6 +119,7 @@ public class id019_EditMenu extends Command {
                     }
                     currentButton.setName(buttonName);
                     buttonDao.update(currentButton);
+//                    categoryDao.updateCategory(currentButton.getName(), currentLang.getId());
                     sendEditor();
                     return COMEBACK;
                 }
@@ -139,7 +143,7 @@ public class id019_EditMenu extends Command {
                     if (updateMessageText.startsWith(NAME)) {
                         String buttonName = ButtonUtil.getButtonName(updateMessageText.replace(NAME, ""));
                         if (buttonDao.isExist(buttonName, currentLang)) {
-                            sendMessage(32);
+                            sendMessage(32); // button_name_busy
                             return COMEBACK;
                         }
                         buttonDao.update(buttonDao.getButton(buttonLinkId, currentLang).setName(buttonName));

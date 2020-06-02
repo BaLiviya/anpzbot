@@ -75,4 +75,10 @@ public class DaoFactory {
     public SaleDao getSaleDao() {
         return new SaleDao();
     }
+
+    public CategoryDao getCategoryDao() {
+        return new CategoryDao();
+    }
+
+    public TempUserDao getTempUserDao() { return new TempUserDao(); }
 }
